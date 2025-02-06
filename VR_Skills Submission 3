@@ -1,0 +1,501 @@
+#region VEXcode Generated Robot Configuration
+import math
+import random
+from vexcode_vrc import *
+from vexcode_vrc.events import get_Task_func
+ 
+# Brain should be defined by default
+brain=Brain()
+ 
+arm_motor = Motor("ArmMotor", 3)
+pusher_motor = Motor("PusherMotor", 8)
+front_distance = Distance("FrontDistance", 6)
+distance = front_distance
+front_optical = Optical("FrontOptical", 5)
+gps = GPS("GPS", 17)
+drivetrain = Drivetrain("drivetrain", 0)
+pusher_rotation = Rotation("PusherRotation", 19)
+ai_vision = AiVision("aiVision", 7)
+ 
+# 'Enum' class for AI Vision GameElements
+class GameElements:
+    MOBILE_GOAL = 0
+    RED_RING = 1
+    BLUE_RING = 2
+ 
+#endregion VEXcode Generated Robot Configuration
+# ------------------------------------------
+#
+#   Project:      VR Skills
+#   Author:       355A 2XStream
+#   Created:      11/2/2024
+#   Description:  VR Skills Code
+#
+# ------------------------------------------
+ 
+def main():
+    # set velocities to 100 percent, since simulation has perfect braking, precision, and acceleration
+    drivetrain.set_drive_velocity(100, PERCENT)
+    drivetrain.set_turn_velocity(100, PERCENT)
+    arm_motor.set_velocity(100, PERCENT)
+    pusher_motor.set_velocity(100,PERCENT)
+    
+ 
+    # put preload on alliance stake
+ 
+    # turn towards wall stake - started with 30 degrees, increased by 5 until accurate
+    pusher_motor.spin_for(FORWARD, 600, DEGREES,wait=False)
+    drivetrain.turn_for(RIGHT, 55, DEGREES, wait=False)
+    # raise arm - move to after turn to increase efficiency
+    arm_motor.spin_for(FORWARD, 500, DEGREES)
+    # drive towards wall stake - started with 100, increased by 20 until accurate
+    drivetrain.drive_for(FORWARD, 200, MM)
+    # spin pusher to release ring
+    pusher_motor.spin_for(FORWARD, 1000, DEGREES)
+ 
+ 
+    # drive to pick up first 2 rings
+ 
+    # turn right 35 degrees - added to prevent from hitting wall
+    drivetrain.turn_for(RIGHT, 35, DEGREES)
+    # back up 150 mm from wall stake - increased from 100 to 150
+    drivetrain.drive_for(REVERSE, 150, MM)
+    # bring back pusher - added wait=False to save time
+    pusher_motor.spin_for(REVERSE, 700, DEGREES, wait=False)
+    # turn right 137 degrees to next ring
+    drivetrain.turn_for(RIGHT, 137, DEGREES)
+    # lower arm - added wait=False to save time
+    arm_motor.spin_for(REVERSE, 400, DEGREES, wait=False)
+    # drive forward 850 mm towards ring
+    drivetrain.drive_for(FORWARD, 850, MM)
+    # lower arm onto ring
+    arm_motor.spin_for(REVERSE, 200, DEGREES)
+    # raise arm - added wait=False to save time
+    arm_motor.spin_for(FORWARD, 200, DEGREES, wait=False)
+    # turn left 35 degrees
+    drivetrain.turn_for(LEFT, 35, DEGREES)
+    # drive forward 620 mm - increased from 500 to 620
+    drivetrain.drive_for(FORWARD, 620, MM)
+    # lower arm onto ring
+    arm_motor.spin_for(REVERSE, 300, DEGREES)
+    # raise arm - added wait=False to save time
+    arm_motor.spin_for(FORWARD, 400, DEGREES, wait=False)
+ 
+ 
+    # put rings on mogo
+ 
+    # turn left 130 degrees - decreased from 150 to 130
+    drivetrain.turn_for(LEFT, 130, DEGREES)
+    # drive forward 600 mm to mogo - increased from 400 to 600
+    drivetrain.drive_for(FORWARD, 600, MM)
+    # release pusher
+    pusher_motor.spin_for(FORWARD, 1000, DEGREES)
+    # bring back pusher - added wait=False
+    pusher_motor.spin_for(REVERSE, 700, DEGREES, wait=False)
+ 
+ 
+    # pick up 2 more rings
+ 
+    # back up 200 mm from mogo
+    drivetrain.drive_for(REVERSE, 200, MM)
+    # turn right 70 degrees - decreased from 90 to 70
+    drivetrain.turn_for(RIGHT, 70, DEGREES)
+    arm_motor.spin_for(REVERSE, 400, DEGREES,wait=False)
+    # drive forward 500 mm - decreased from 600 to 500
+    drivetrain.drive_for(FORWARD, 500, MM)
+    # lower arm onto ring
+    arm_motor.spin_for(REVERSE, 700, DEGREES)
+    # raise arm - added wait=False to save time
+    arm_motor.spin_for(FORWARD, 100, DEGREES, wait=False)
+    # turn left 25 degrees - increased from 20 to 25
+    drivetrain.turn_for(LEFT, 25, DEGREES)
+    # drive forward 300 mm - increased from 200 to 300
+    drivetrain.drive_for(FORWARD, 300, MM)
+    # lower arm
+    arm_motor.spin_for(REVERSE, 700, DEGREES)
+    # raise arm - added wait=False
+    arm_motor.spin_for(FORWARD, 400, DEGREES, wait=False)
+ 
+ 
+    # put rings on mogo
+ 
+    # turn left 115 degrees - decreased from 140 to 115
+    drivetrain.turn_for(LEFT, 115, DEGREES)
+    # drive forward 500 mm - increased from 400 to 500
+    drivetrain.drive_for(FORWARD, 500, MM)
+    # release pusher
+    pusher_motor.spin_for(FORWARD, 1000, DEGREES)
+    # bring back pusher - added wait=False
+    pusher_motor.spin_for(REVERSE, 700, DEGREES, wait=False)
+    
+ 
+    # grab next 2 rings
+ 
+    # back up 300 mm
+    drivetrain.drive_for(REVERSE, 300, MM)
+    arm_motor.spin_for(REVERSE, 400, DEGREES,wait=False)
+    # turn right 160 degrees - increased from 140 to 160
+    drivetrain.turn_for(RIGHT, 160, DEGREES)
+    # drive forward 400 mm
+    drivetrain.drive_for(FORWARD, 400, MM)
+    # turn right 10 degrees
+    drivetrain.turn_for(RIGHT, 10, DEGREES)
+    # drive forward 100 mm
+    drivetrain.drive_for(FORWARD, 100, MM)
+    # lower arm
+    arm_motor.spin_for(REVERSE, 700, DEGREES)
+    # raise arm - added wait=False
+    arm_motor.spin_for(FORWARD, 200, DEGREES, wait=False)
+    # turn right 105 degrees - decreased from 110 to 105
+    drivetrain.turn_for(RIGHT, 105, DEGREES)
+    # drive forward 1100 mm - decreased from 1200 to 1100
+    drivetrain.drive_for(FORWARD, 1100, MM)
+    # lower arm
+    arm_motor.spin_for(REVERSE, 700, DEGREES)
+    # raise arm - added wait=False
+    arm_motor.spin_for(FORWARD, 400, DEGREES, wait=False)
+ 
+ 
+    # put rings on mogo
+ 
+    # turn right 140 degrees - increased from 120 to 140
+    drivetrain.turn_for(RIGHT, 140, DEGREES)
+    # drive forward 1050 mm - increased from 1000 to 1050
+    drivetrain.drive_for(FORWARD, 1050, MM)
+    # release pusher
+    pusher_motor.spin_for(FORWARD, 1000, DEGREES, wait=False)
+ 
+ 
+    # push mogo into corner
+ 
+    # turn right 95 degrees - decreased from 180 to 95
+    drivetrain.turn_for(RIGHT, 95, DEGREES)
+    # drive forward 1000 mm
+    drivetrain.drive_for(FORWARD, 1000, MM)
+    # bring back pusher - added wait=False
+    pusher_motor.spin_for(REVERSE, 700, DEGREES, wait=False)
+ 
+ 
+    # drive to and grab ring from under ladder
+ 
+    # back up 300 mm
+    drivetrain.drive_for(REVERSE, 300, MM)
+    # turn right 165 degrees
+    drivetrain.turn_for(RIGHT, 165, DEGREES)
+    # lower arm - added wait=False
+    arm_motor.spin_for(REVERSE, 1000, DEGREES, wait=False)
+    # drive forward 1200 mm
+    drivetrain.drive_for(FORWARD, 1250, MM)
+    # raise arm - added wait=False
+    arm_motor.spin_for(FORWARD, 100, DEGREES, wait=False)
+    # turn right 5 degrees
+    drivetrain.turn_for(RIGHT, 5, DEGREES)
+    # drive forward 400 mm
+    drivetrain.drive_for(FORWARD, 400, MM)
+    # lower arm
+    arm_motor.spin_for(REVERSE, 1000, DEGREES)
+    # raise arm - added wait=False
+    arm_motor.spin_for(FORWARD, 100, DEGREES, wait=False)
+ 
+ 
+    # grab next ring
+    
+    # turn right 70 degrees - decreased from 90 to 70
+    drivetrain.turn_for(RIGHT, 70, DEGREES)
+    # drive forward 600 mm - increased from 500 to 600
+    drivetrain.drive_for(FORWARD, 600, MM)
+    # turn right 20 degrees
+    drivetrain.turn_for(RIGHT, 20, DEGREES)
+    # drive forward 200 mm
+    drivetrain.drive_for(FORWARD, 200, MM)
+    # lower arm onto ring
+    arm_motor.spin_for(REVERSE, 1000, DEGREES)
+    # raise arm - added wait=False to save time
+    arm_motor.spin_for(FORWARD, 400, DEGREES, wait=False)
+ 
+ 
+    # put 2 rings on mogo
+ 
+    # turn right 35 degrees
+    drivetrain.turn_for(RIGHT, 33, DEGREES)
+    # drive forward 600 mm
+    drivetrain.drive_for(FORWARD, 600, MM)
+    # release pusher
+    pusher_motor.spin_for(FORWARD, 1000, DEGREES)
+    # bring back pusher - added wait=False
+    pusher_motor.spin_for(REVERSE, 700, DEGREES, wait=False)
+    # back up 300 mm
+    drivetrain.drive_for(REVERSE, 300, MM)
+ 
+ 
+    # grab next 2 rings
+ 
+    # turn left 80 degrees - decreased from 90 to 80
+    drivetrain.turn_for(LEFT, 80, DEGREES)
+    arm_motor.spin_for(REVERSE, 400, DEGREES,wait=False)
+    # drive forward 600 mm
+    drivetrain.drive_for(FORWARD, 600, MM)
+    # lower arm
+    arm_motor.spin_for(REVERSE, 1000, DEGREES)
+    # raise arm - added wait=False
+    arm_motor.spin_for(FORWARD, 100, DEGREES, wait=False)
+    # turn right 72 degrees - increased from 50 to 72
+    drivetrain.turn_for(RIGHT, 72, DEGREES)
+    # drive forward 550 mm
+    drivetrain.drive_for(FORWARD, 550, MM)
+    # lower arm
+    arm_motor.spin_for(REVERSE, 1000, DEGREES)
+    # raise arm - added wait=False to save time
+    arm_motor.spin_for(FORWARD, 400, DEGREES, wait=False)
+ 
+ 
+    # put 2 rings on mogo
+ 
+    # turn right 90 degrees - increased from 60 to 90
+    drivetrain.turn_for(RIGHT, 90, DEGREES)
+    # drive forward 400 mm - increased from 300 to 400
+    drivetrain.drive_for(FORWARD, 400, MM)
+    # release pusher
+    pusher_motor.spin_for(FORWARD, 1000, DEGREES)
+    # bring back pusher - added wait=False
+    pusher_motor.spin_for(REVERSE, 700, DEGREES, wait=False)
+ 
+ 
+    # grab next 2 rings
+ 
+    # drive backwards 200 mm
+    drivetrain.drive_for(REVERSE, 200, MM)
+    arm_motor.spin_for(REVERSE, 400, DEGREES,wait=False)
+    # turn left 120 degrees - increased from 100 to 120
+    drivetrain.turn_for(LEFT, 120, DEGREES)
+    # drive forward 400 mm - increased from 300 to 400
+    drivetrain.drive_for(FORWARD, 400, MM)
+    # lower arm
+    arm_motor.spin_for(REVERSE, 1000, DEGREES)
+    # raise arm - added wait=False to save time
+    arm_motor.spin_for(FORWARD, 200, DEGREES, wait=False)
+    # turn right 70 degrees - decreased from 90 to 70
+    drivetrain.turn_for(RIGHT, 65, DEGREES)
+    # drive forward 300 mm - increased from 200 to 300
+    drivetrain.drive_for(FORWARD, 300, MM)
+    # lower arm
+    arm_motor.spin_for(REVERSE, 1000, DEGREES)
+    # raise arm - added wait=False to save time
+    arm_motor.spin_for(FORWARD, 400, DEGREES, wait=False)
+ 
+ 
+    # put rings on mogo
+ 
+    # turn right 82 degrees - decreased from 100 to 82
+    drivetrain.turn_for(RIGHT, 82, DEGREES)
+    # drive forward 550 mm - increased from 400 to 550
+    drivetrain.drive_for(FORWARD, 550, MM)
+    # release pusher
+    pusher_motor.spin_for(FORWARD, 1000, DEGREES, wait=False)
+    
+ 
+ 
+    # push mogo into corner
+ 
+    # turn left 145 degrees - increased from 70 to 145
+    drivetrain.turn_for(LEFT, 145, DEGREES)
+    # drive forward 800 mm
+    drivetrain.drive_for(FORWARD, 800, MM)
+    # bring back pusher - added wait=False
+    pusher_motor.spin_for(REVERSE, 700, DEGREES, wait=False)
+ 
+ 
+    # grab next 2 rings
+ 
+    # back up 300 mm - increased from 200 to 300
+    drivetrain.drive_for(REVERSE, 300, MM)
+    arm_motor.spin_for(REVERSE, 400, DEGREES,wait=False)
+    # turn left 113 degrees - decreased from 140 to 113
+    drivetrain.turn_for(LEFT, 113, DEGREES)
+    # drive forward 1250 mm - increased from 1000 to 1250
+    drivetrain.drive_for(FORWARD, 1250, MM)
+    # lower arm
+    arm_motor.spin_for(REVERSE, 1000, DEGREES)
+    # raise arm - added wait=False to save time
+    arm_motor.spin_for(FORWARD, 200, DEGREES, wait=False)
+    # turn left 60 degrees - decreased from 80 to 60
+    drivetrain.turn_for(LEFT, 60, DEGREES)
+    # drive forward 1000 mm - increased from 800 to 1000
+    drivetrain.drive_for(FORWARD, 1000, MM)
+    # lower arm
+    arm_motor.spin_for(REVERSE, 1000, DEGREES)
+    # raise arm - added wait=False to save time
+    arm_motor.spin_for(FORWARD, 400, DEGREES, wait=False)
+ 
+ 
+    # put the rings on mogo in middle
+ 
+    # drive forward 900 mm - increased from 800 to 900
+    drivetrain.drive_for(FORWARD, 900, MM)
+    # release pusher
+    pusher_motor.spin_for(FORWARD, 1000, DEGREES, wait=False)
+ 
+ 
+    # push mogo closer to wall
+ 
+    # turn right 30 degrees
+    drivetrain.turn_for(RIGHT, 30, DEGREES)
+    # drive forward 300 mm - increased from 100 to 300
+    drivetrain.drive_for(FORWARD, 300, MM)
+    # bring back pusher - added wait=False
+    pusher_motor.spin_for(REVERSE, 700, DEGREES, wait=False)
+ 
+ 
+    # push mogo with blue ring into corner
+ 
+    # drive reverse 200 mm
+    drivetrain.drive_for(REVERSE, 200, MM)
+    # turn right 70 degrees
+    drivetrain.turn_for(RIGHT, 70, DEGREES)
+    # drive forward 500 mm - increased from 400 to 500
+    drivetrain.drive_for(FORWARD, 500, MM)
+    # turn right 10 degrees - decreased from 20 to 10
+    drivetrain.turn_for(RIGHT, 10, DEGREES)
+    # drive forward 1000 mm
+    drivetrain.drive_for(FORWARD, 1000, MM)
+ 
+ 
+    # get next 2 rings
+    
+    # back up 500 mm
+    arm_motor.spin_for(REVERSE, 400, DEGREES,wait=False)
+    drivetrain.drive_for(REVERSE, 500, MM)
+    # turn right 55 degrees
+    drivetrain.turn_for(RIGHT, 55, DEGREES)
+    # lower arm
+    arm_motor.spin_for(REVERSE, 1000, DEGREES)
+    # raise arm
+    arm_motor.spin_for(FORWARD, 50, DEGREES)
+    # drive forward 300 mm
+    drivetrain.drive_for(FORWARD, 300, MM)
+    # back up 50 mm
+    drivetrain.drive_for(REVERSE, 50, MM)
+    # lower arm
+    arm_motor.spin_for(REVERSE, 1000, DEGREES)
+    # raise arm
+    arm_motor.spin_for(FORWARD, 100, DEGREES)
+    # turn right 45 degrees - increased from 30 to 45
+    drivetrain.turn_for(RIGHT, 45, DEGREES)
+    # drive forward 550 mm
+    drivetrain.drive_for(FORWARD, 550, MM)
+    # lower arm
+    arm_motor.spin_for(REVERSE, 300, DEGREES)
+    # raise arm
+    arm_motor.spin_for(FORWARD, 400, DEGREES, wait=False)
+    
+ 
+    # put rings on mogo
+ 
+    # turn right 125 degrees
+    drivetrain.turn_for(RIGHT, 125, DEGREES)
+    # drive forward 1300 mm - increased from 1000 to 1300
+    drivetrain.drive_for(FORWARD, 1300, MM)
+    # release pusher
+    pusher_motor.spin_for(FORWARD, 1000, DEGREES)
+    # bring back pusher - added wait=False
+    pusher_motor.spin_for(REVERSE, 700, DEGREES, wait=False)
+    # turn right 90 degrees
+    drivetrain.turn_for(RIGHT, 90, DEGREES)
+ 
+    
+    # grab next 2 rings
+ 
+    # back up 100 mm
+    arm_motor.spin_for(REVERSE, 300, DEGREES,wait=False)
+    drivetrain.drive_for(REVERSE, 100, MM)
+    # turn left 120 degrees - increased from 90 to 120
+    drivetrain.turn_for(LEFT, 120, DEGREES)
+    # drive forward 400 mm
+    drivetrain.drive_for(FORWARD, 400, MM)
+    # turn left 36 degrees - decreased fron 40 to 36
+    drivetrain.turn_for(LEFT, 36, DEGREES)
+    # drive forward 400 mm - increased from 300 to 400
+    drivetrain.drive_for(FORWARD, 400, MM)
+    # lower arm
+    arm_motor.spin_for(REVERSE, 1000, DEGREES)
+    # raise arm - added wait=False
+    arm_motor.spin_for(FORWARD, 100, DEGREES, wait=False)
+    # turn right 29 degrees - decreased from 30 to 29
+    drivetrain.turn_for(RIGHT, 29, DEGREES)
+    # drive forward 650 mm - increased from 400 to 650
+    drivetrain.drive_for(FORWARD, 650, MM)
+    # lower arm
+    arm_motor.spin_for(REVERSE, 1000, DEGREES)
+    # raise arm - added wait=False
+    arm_motor.spin_for(FORWARD, 500, DEGREES, wait=False)
+ 
+ 
+    # put rings on alliance stake
+    
+    # turn right 150 degrees - decreased from 160 to 150
+    drivetrain.turn_for(RIGHT, 150, DEGREES)
+    # drive forward 1200 mm
+    drivetrain.drive_for(FORWARD, 1200, MM)
+    # turn left 30 degrees - increased from 15 to 30
+    drivetrain.turn_for(LEFT, 30, DEGREES)
+    # drive forward 300 mm
+    drivetrain.drive_for(FORWARD, 300, MM)
+    # release pusher
+    pusher_motor.spin_for(FORWARD, 1000, DEGREES)
+    # bring back pusher - added wait=False
+    pusher_motor.spin_for(REVERSE, 700, DEGREES, wait=False)
+ 
+ 
+    # put blue mogo into corner
+ 
+    # turn left 100 degrees
+    drivetrain.turn_for(LEFT, 100, DEGREES)
+    # drive forward 1500 mm
+    drivetrain.drive_for(FORWARD, 1500, MM)
+    
+ 
+    # grab 1 ring
+ 
+    # lower arm
+    arm_motor.spin_for(REVERSE, 1000, DEGREES,wait=False)
+    # back up 400 mm
+    drivetrain.drive_for(REVERSE, 400, MM)
+    # turn left 55 degrees
+    drivetrain.turn_for(LEFT, 50, DEGREES)
+    # raise arm
+    arm_motor.spin_for(FORWARD, 50, DEGREES,wait=False)
+    # drive forward 200 mm
+    drivetrain.drive_for(FORWARD, 200, MM)
+    # back up 40 mm
+    drivetrain.drive_for(REVERSE, 40, MM)
+    # lower arm
+    arm_motor.spin_for(REVERSE, 50, DEGREES)
+    # raise arm
+    arm_motor.spin_for(FORWARD, 400, DEGREES,wait=False)
+ 
+    
+    # put ring on mogo
+ 
+    # turn left 130 degrees - decreased from 170 to 130
+    drivetrain.turn_for(LEFT, 130, DEGREES)
+    # drive forward 2000 mm
+    drivetrain.drive_for(FORWARD, 2000, MM)
+    # release pusher
+    pusher_motor.spin_for(FORWARD, 1000, DEGREES)
+    # back up 100 mm
+    drivetrain.drive_for(REVERSE, 100, MM)
+ 
+ 
+    # hang on ladder
+ 
+    # raise arm
+    arm_motor.spin_for(FORWARD, 1000, DEGREES, wait=False)
+    # turn right 110 degrees
+    drivetrain.turn_for(RIGHT, 110, DEGREES)
+    # drive forward 1200 mm
+    drivetrain.drive_for(FORWARD, 1200, MM)
+    # lower arm
+    arm_motor.spin(REVERSE)
+ 
+# VR threads — Do not delete
+vr_thread(main)
